@@ -2,8 +2,6 @@
 import pandas as pd
 import re
 
-
-
 class IMDBDataSet:
     def __init__(self, pattern='train'):
         filePath = "./data/IMDB Dataset.csv"
