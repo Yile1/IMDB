@@ -55,17 +55,17 @@ class Vocab:
 
 if __name__ == "__main__":
     from dataset import *
-    tokens = [["叶光", "叶光", "大", "冤种"],
-             ["叶光", "大便", "吃", "大便"]]
-    vocab = Vocab(tokens, 1)
-    print(vocab.dict)
-    review = ["大", "冤种", "叶光", "天天", "吃", "大便"]
-    print(vocab.token_to_idx(review, 6))
+    # tokens = [["叶光", "叶光", "大", "冤种"],
+    #          ["叶光", "大便", "吃", "大便"]]
+    # vocab = Vocab(tokens, 1)
+    # print(vocab.dict)
+    # review = ["大", "冤种", "叶光", "天天", "吃", "大便"]
+    # print(vocab.token_to_idx(review, 6))
 
-    # tokens = IMDBDataSet(pattern='train').get_tokens()
-    # vocab = Vocab(tokens)
-    # if not os.path.exists("./vocab"):
-    #     os.makedirs("./vocab")
-    # pickle.dump(vocab, open("./vocab/vocab.pkl", "wb"))
-    # voc_model = pickle.load(open("./vocab/vocab.pkl", "rb"))
-    # print(voc_model)
+    tokens = IMDBDataSet(pattern='train').get_tokens()
+    vocab = Vocab(tokens)
+    if not os.path.exists("./vocab"):
+        os.makedirs("./vocab")
+    pickle.dump(vocab, open("./vocab/vocab.pkl", "wb"))
+    voc_model = pickle.load(open("./vocab/vocab.pkl", "rb"))
+    print(voc_model)
