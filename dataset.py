@@ -34,7 +34,8 @@ class IMDBDataSet:
         fileters = ['!', '"', '#', '$', '%', '&', '\(', '\)', '\*', '\+', ',', '-', '\.', '/', ':', ';', '<', '=', '>',
                     '\?', '@', '\[', '\\', '\]', '^', '_', '`', '\{', '\|', '\}', '~', '\t', '\n', '\x97', '\x96', '”',
                     '“', ]
-        self.reviews = [review.lower() for review in self.reviews]  # 把大写转化为小写
+        # 把大写转化为小写
+        self.reviews = [review.lower() for review in self.reviews]
         for review in self.reviews:
             review = re.sub("<br />", " ", review)
             review = re.sub("|".join(fileters), " ", review)

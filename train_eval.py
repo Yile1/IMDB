@@ -41,7 +41,6 @@ def get_eval_accuracy(net, sentiments_pred, sentiments):
 
 def train_epoch(net, train_loader, loss, optimizer, device):
     metric = d2l.Accumulator(2)  # 训练损失之和,词元数量
-    accurate_cnt = 0
     for tokens_idx, sentiments in train_loader:
         optimizer.zero_grad()
         tokens_idx = tokens_idx.to(device)
@@ -57,14 +56,14 @@ def train_epoch(net, train_loader, loss, optimizer, device):
     return metric[0] / metric[1]
 
 
-def train(net, train_loader, num_epochs, net_path, state_dict_path, device):
+def train(net, train_loader, num_epoch, checkpoint_path, device):
     loss = nn.CrossEntropyLoss()
     optimizer = Adam(net.parameters())
     epoch_loss_list = []
     epoches_accuracy_list = []
     eval_loss_list = []
     eval_accuracy_list = []
-    for epoch in range(num_epochs):
+    for epoch in range(num_epoch):
         net.train()
         epoch_loss = train_epoch(net, train_loader, loss, optimizer, device)
         epoch_accuracy = get_train_accuracy(net, train_loader, device)
@@ -78,11 +77,13 @@ def train(net, train_loader, num_epochs, net_path, state_dict_path, device):
         print(f'train: epoch {epoch + 1} loss: {epoch_loss} accuracy: {epoch_accuracy}')
         print(f'validate: epoch {epoch + 1} loss: {eval_loss} accuracy: {eval_accuracy}\n')
 
-    torch.save(net, net_path)
     # 保存模型参数
-    net_state_dict = net.state_dict()
-    torch.save(net_state_dict, state_dict_path)
-    show_descent(num_epochs, epoch_loss_list, epoches_accuracy_list, eval_loss_list, eval_accuracy_list)
+    checkpoint = {"model": net,
+                  "model_state_dict": net.state_dict(),
+                  "optimizer": optimizer,
+                  "optimizer_state_dict": optimizer.state_dict()}
+    torch.save(checkpoint, checkpoint_path)
+    show_descent(num_epoch, epoch_loss_list, epoches_accuracy_list, eval_loss_list, eval_accuracy_list)
 
 
 def show_descent(num_epoch, *args):

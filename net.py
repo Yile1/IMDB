@@ -13,7 +13,8 @@ class rnn_net(nn.Module):
         self.fc2 = nn.Linear(64, 2)
 
     def forward(self, tokens):
-        token_embeded = self.embedding(tokens)  # token_embeded :[batch_size, max_word, 200]
+        # token_embeded :[batch_size, max_word, 200]
+        token_embeded = self.embedding(tokens)
 
         # output(seq_len, batch, hidden_size * num_directions)
         # hn(num_layers * num_directions, batch, hidden_size)
@@ -21,10 +22,12 @@ class rnn_net(nn.Module):
         if not isinstance(self.rnn_layer, nn.LSTM):
             output, h_n = self.rnn_layer(token_embeded)
         else:
-            output, (h_n, c_n) = self.rnn_layer(token_embeded)  # h_n :[4,batch_size,hidden_size]
+            # h_n :[4,batch_size,hidden_size]
+            output, (h_n, c_n) = self.rnn_layer(token_embeded)
         # out :[batch_size,hidden_size*2]
-        out = torch.cat([h_n[-1, :, :], h_n[-2, :, :]], dim=-1)  # 拼接正向最后一个输出和反向最后一个输出
+        # 拼接正向最后一个输出和反向最后一个输出
+        out = torch.cat([h_n[-1, :, :], h_n[-2, :, :]], dim=-1)
         out_fc1 = self.fc1(out)
         out_fc1_relu = F.relu(out_fc1)
-        out_fc2 = self.fc2(out_fc1_relu)  # out :[batch_size,2]
+        out_fc2 = self.fc2(out_fc1_relu)
         return F.log_softmax(out_fc2, dim=-1)

@@ -34,6 +34,7 @@ class transform:
 
 
 def get_loader(batch_size, pattern):
+    # 利用词典转换语句为向量
     imdb_ds = transform(pattern=pattern)
     # 调用__getitem__函数
     return DataLoader(imdb_ds, batch_size=batch_size, shuffle=False, collate_fn=my_collate), imdb_ds
