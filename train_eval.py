@@ -78,10 +78,7 @@ def train(net, train_loader, num_epoch, checkpoint_path, device):
         print(f'validate: epoch {epoch + 1} loss: {eval_loss} accuracy: {eval_accuracy}\n')
 
     # 保存模型参数
-    checkpoint = {"model": net,
-                  "model_state_dict": net.state_dict(),
-                  "optimizer": optimizer,
-                  "optimizer_state_dict": optimizer.state_dict()}
+    checkpoint = {"model_state_dict": net.state_dict()}
     torch.save(checkpoint, checkpoint_path)
     show_descent(num_epoch, epoch_loss_list, epoches_accuracy_list, eval_loss_list, eval_accuracy_list)
 
